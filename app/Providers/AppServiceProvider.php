@@ -3,6 +3,11 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Laravel\Cashier\Cashier;
+use App\Models\Cashier\Subscription;
+use Stripe\Stripe;
+
+// use App\Models\Cashier\SubscriptionItem;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -11,7 +16,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
     }
 
     /**
@@ -19,6 +23,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Stripe::setApiKey(config('cashier.secret'));
+        Cashier::useSubscriptionModel(Subscription::class);
+        // Cashier::useSubscriptionItemModel(SubscriptionItem::class);
     }
 }

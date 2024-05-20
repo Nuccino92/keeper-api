@@ -2,21 +2,24 @@
 
 namespace App\Http\Resources;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin User */
-class UserResource extends JsonResource
+class OrganizationResource extends JsonResource
 {
+    /**
+     * Transform the resource into an array.
+     *
+     * @return array<string, mixed>
+     */
     public function toArray(Request $request): array
     {
         return [
             'id' => $this->id,
+            'owner_id' => $this->owner_id,
             'name' => $this->name,
-            "email" => $this->email,
-            'email_verified_at' => $this->email_verified_at,
-            'trial_ends_at' => $this->trial_ends_at
+            'logo' => $this->logo,
+            'description' => $this->description
         ];
     }
 }
