@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\ControlPanel;
 
 use App\Enums\Api\HttpResponseCodes;
 use App\Models\League;
@@ -11,6 +11,8 @@ use Exception;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use App\Http\Requests\League\LeagueRequest;
+use Illuminate\Support\Facades\Cache;
+use App\Http\Controllers\Controller;
 
 class ControlPanelController extends Controller
 {
@@ -20,12 +22,12 @@ class ControlPanelController extends Controller
             return response()->json(['data' => [
                 'league_info' => $league, 'seasons' => [
                     'all_seasons' => [
-                        ['id' => '1', 'name' => '2019-2020 Bball season'],
-                        ['id' => '2', 'name' => '2020-2021 Bball season'],
-                        ['id' => '3', 'name' => '2021-2022 Bball season'],
-                        ['id' => '4', 'name' => '2022-2023 Bball season'],
+                        ['id' => 1, 'name' => '2019-2020 Bball season'],
+                        ['id' => 2, 'name' => '2020-2021 Bball season'],
+                        ['id' => 3, 'name' => '2021-2022 Bball season'],
+                        ['id' => 4, 'name' => '2022-2023 Bball season'],
                     ],
-                    'active_season' => '4',
+                    'active_season_id' => 4,
                 ]
             ], 'message' => 'Successfully retrieved your league information'], HttpResponseCodes::HttpOK->value);
 
@@ -68,40 +70,4 @@ class ControlPanelController extends Controller
             return response()->json(['error' => "server error"]);
         }
     }
-
-    //region - members
-
-    //endregion- members
-
-    //region - teams
-    public function findTeams(): JsonResponse
-    {
-        return response()->json(
-            [
-                'message' => "Teams retrieved successfully"
-            ],
-            HttpResponseCodes::HttpOK->value
-        );
-    }
-
-    public function updateTeam(): JsonResponse
-    {
-        return response()->json(
-            [
-                'message' => "Team updated successfully"
-            ],
-            HttpResponseCodes::HttpOK->value
-        );
-    }
-
-    public function deleteTeam(): JsonResponse
-    {
-        return response()->json(
-            [
-                'message' => "Teams retrieved successfully"
-            ],
-            HttpResponseCodes::HttpOK->value
-        );
-    }
-    //endregion - teams
 }

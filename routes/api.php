@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\Auth\PassportAuthController;
-use App\Http\Controllers\ControlPanelController;
+use App\Http\Controllers\ControlPanel\ControlPanelController;
+use App\Http\Controllers\ControlPanel\TeamControlPanelController;
 use App\Http\Controllers\LeagueController;
 use App\Http\Controllers\Payments\ProductController;
 use App\Http\Controllers\Payments\SubscriptionController;
@@ -124,9 +125,12 @@ Route::middleware(['auth:api'])->group((function () {
                 });
 
                 Route::prefix('teams')->group(function () {
-                    Route::get('', [ControlPanelController::class, 'findTeams']);
-                    Route::put('/{team}', [ControlPanelController::class, 'updateTeam']);
-                    Route::delete('/{team}', [ControlPanelController::class, 'deleteTeam']);
+                    Route::get('', [TeamControlPanelController::class, 'index']);
+                    Route::get('/{team}', [TeamControlPanelController::class, 'findTeam']);
+                    Route::put('/{team}', [TeamControlPanelController::class, 'updateTeam']);
+                    Route::delete('/{team}', [TeamControlPanelController::class, 'deleteTeam']);
+
+                    Route::get('/for-management', [TeamControlPanelController::class, 'findTeamsForManagement']);
                 });
 
                 Route::prefix('players')->group(function () {
