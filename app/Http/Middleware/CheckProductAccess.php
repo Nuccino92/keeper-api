@@ -21,7 +21,6 @@ class CheckProductAccess
         /** @var User $user */
         $user = auth()->user();
 
-
         $type = $request->route('league') ? 'league' : 'organization';
 
         if ($type === 'league') {

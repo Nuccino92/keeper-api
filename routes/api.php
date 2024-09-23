@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\PassportAuthController;
 use App\Http\Controllers\ControlPanel\ControlPanelController;
 use App\Http\Controllers\ControlPanel\TeamControlPanelController;
+use App\Http\Controllers\Events\EventsController;
 use App\Http\Controllers\LeagueController;
 use App\Http\Controllers\Payments\ProductController;
 use App\Http\Controllers\Payments\SubscriptionController;
@@ -66,9 +67,7 @@ Route::middleware((['auth:api']))->group(function () {
 
 
 Route::middleware(['auth:api'])->group((function () {
-    /**
-     * Region - League
-     */
+    // Region - League
     Route::prefix('league')->group(function () {
         Route::get('/{league}', [LeagueController::class, 'index']);
         Route::post('/', [LeagueController::class, 'create']);
@@ -79,13 +78,9 @@ Route::middleware(['auth:api'])->group((function () {
             Route::post('/{league}', [SubscriptionController::class, 'subscribeToLeague']);
         });
     });
-    /**
-     * End Region - League
-     */
+    // End Region - League
 
-    /**
-     * Region - Organization
-     */
+    // Region - Organization
     Route::prefix('organization')->group(function () {
         // Route::get('/', []);
         //create OrganizationController
@@ -97,32 +92,23 @@ Route::middleware(['auth:api'])->group((function () {
             Route::post('/{organization}', [SubscriptionController::class, 'subscribeToLeague']);
         });
     });
-    /**
-     * End Region - Organization
-     */
+    // End Region - Organization
 
-    /**
-     * Region - Slug
-     */
+    // Region - Slug
     Route::prefix('slug')->group(function () {
         Route::get('/check-unique', [SlugController::class, 'checkUnique']);
         Route::post('/generate', [SlugController::class, 'generateSlug']);
     });
-    /**
-     * End Region - Slug
-     */
+    // End Region - Slug
 
-    /**
-     * Region - Control Panel Routes
-     */
+    // Region - Control Panel Routes
     Route::prefix('control-panel')->group(function () {
         //region
         Route::prefix('league')->group(function () {
             Route::middleware([CheckProductAccess::class])->group(function () {
                 Route::get('/{league}', [ControlPanelController::class, 'index']);
 
-                Route::prefix('members')->group(function () {
-                });
+                Route::prefix('members')->group(function () {});
 
                 Route::prefix('teams')->group(function () {
                     Route::get('', [TeamControlPanelController::class, 'index']);
@@ -133,8 +119,7 @@ Route::middleware(['auth:api'])->group((function () {
                     Route::get('/for-management', [TeamControlPanelController::class, 'findTeamsForManagement']);
                 });
 
-                Route::prefix('players')->group(function () {
-                });
+                Route::prefix('players')->group(function () {});
             });
         });
         //endregion
@@ -145,9 +130,18 @@ Route::middleware(['auth:api'])->group((function () {
         });
         //endregion
     });
-    /**
-     * End Region - Control Panel Routes
-     */
+    // End Region - Control Panel Routes
+
+    // Region - Events
+    Route::prefix('events')->group(function () {
+        Route::prefix('league')->group(function () {
+            Route::middleware([CheckProductAccess::class])->group(function () {
+                Route::get('/{league}', [EventsController::class, 'index']);
+            });
+        });
+    });
+    // End Region - Events
+
 }));
 
 
