@@ -5,16 +5,13 @@ namespace App\Http\Controllers\ControlPanel;
 use App\Enums\Api\HttpResponseCodes;
 use App\Enums\MemberRoleEnum;
 use App\Enums\RolePermissionsEnum;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\League\LeagueRequest;
 use App\Models\League;
-use App\Models\User;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Exception;
-use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use App\Http\Requests\League\LeagueRequest;
-use Illuminate\Support\Facades\Cache;
-use App\Http\Controllers\Controller;
 
 class ControlPanelController extends Controller
 {
@@ -37,7 +34,7 @@ class ControlPanelController extends Controller
                 ['id' => 3, 'name' => '2021-2022 Bball season'],
                 ['id' => 4, 'name' => '2022-2023 Bball season'],
             ],
-            //set as 
+            //set as
             'active_season_id' => 4,
         ];
         $withithoutActiveSeason = [
@@ -47,7 +44,7 @@ class ControlPanelController extends Controller
                 ['id' => 3, 'name' => '2021-2022 Bball season'],
                 ['id' => 4, 'name' => '2022-2023 Bball season'],
             ],
-            //set as 
+            //set as
             'active_season_id' => null,
         ];
 
@@ -61,7 +58,7 @@ class ControlPanelController extends Controller
             RolePermissionsEnum::MANAGE_CALENDAR => ['scope' => []],
             RolePermissionsEnum::MANAGE_SEASONS => ['scope' => []],
             RolePermissionsEnum::MANAGE_ROSTER => ['scope' => []],
-            RolePermissionsEnum::MANAGE_TEAMS => ['scope' => []]
+            RolePermissionsEnum::MANAGE_TEAMS => ['scope' => []],
         ]];
 
         $superAdminRole = ['role_name' => MemberRoleEnum::SuperAdmin, 'permissions' => [
@@ -72,7 +69,7 @@ class ControlPanelController extends Controller
             RolePermissionsEnum::MANAGE_CALENDAR => ['scope' => []],
             RolePermissionsEnum::MANAGE_SEASONS => ['scope' => []],
             RolePermissionsEnum::MANAGE_ROSTER => ['scope' => []],
-            RolePermissionsEnum::MANAGE_TEAMS => ['scope' => []]
+            RolePermissionsEnum::MANAGE_TEAMS => ['scope' => []],
         ]];
 
         $adminRole = ['role_name' => MemberRoleEnum::Admin, 'permissions' => [
@@ -82,12 +79,12 @@ class ControlPanelController extends Controller
             RolePermissionsEnum::MANAGE_CALENDAR => ['scope' => []],
             RolePermissionsEnum::MANAGE_SEASONS => ['scope' => []],
             RolePermissionsEnum::MANAGE_ROSTER => ['scope' => []],
-            RolePermissionsEnum::MANAGE_TEAMS => ['scope' => []]
+            RolePermissionsEnum::MANAGE_TEAMS => ['scope' => []],
         ]];
 
         $memberRole = ['role_name' => MemberRoleEnum::Member, 'permissions' => [
             RolePermissionsEnum::MANAGE_ROSTER => ['scope' => []],
-            RolePermissionsEnum::MANAGE_TEAMS => ['scope' => [1, 5]]
+            RolePermissionsEnum::MANAGE_TEAMS => ['scope' => [1, 5]],
         ]];
 
         $playerRole = ['role_name' => MemberRoleEnum::Player, 'permissions' => []];
@@ -95,11 +92,11 @@ class ControlPanelController extends Controller
         try {
             return response()->json(['data' => [
                 'league_info' => $league,
-                'seasons' =>  $withithoutActiveSeason,
-                'role' => $ownerRole
+                'seasons' => $withSeasons,
+                'role' => $ownerRole,
             ], 'message' => 'Successfully retrieved your league information'], HttpResponseCodes::HttpOK->value);
 
-            return response()->json(['message' => "League successfully retrieved"]);
+            return response()->json(['message' => 'League successfully retrieved']);
         } catch (NotFoundHttpException $e) {
             // Return 404 error for league not found
             return response()->json(['error' => 'League not found'], HttpResponseCodes::HttpNotFound->value);
@@ -120,22 +117,21 @@ class ControlPanelController extends Controller
                 'secondary_color' => $request->input('secondary_color'),
                 'sport' => $request->input('sport'),
                 'owner_id' => $request->input('owner_id'),
-                'organization_id' => $request->input('organization_id')
+                'organization_id' => $request->input('organization_id'),
             ];
 
             $league->fill($result);
             $league->update($result);
 
-
             return response()->json(
                 [
                     'league' => $league,
-                    'message' => "League '{$league->name}' updated successfully"
+                    'message' => "League '{$league->name}' updated successfully",
                 ],
                 HttpResponseCodes::HttpOK->value
             );
         } catch (Exception $e) {
-            return response()->json(['error' => "server error"]);
+            return response()->json(['error' => 'server error']);
         }
     }
 }

@@ -9,6 +9,7 @@ use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 use App\Http\Controllers\Controller;
+use App\Models\League;
 
 class TeamControlPanelController extends Controller
 {
@@ -82,5 +83,19 @@ class TeamControlPanelController extends Controller
         // Invalidate cache
         $leagueId = $request->league_id;
         Cache::forget("league_{$leagueId}_teams_with_properties");
+    }
+
+    public function findTeamInSeason(League $league): JsonResponse
+    {
+
+        //TODO: check season_team junction table
+
+        return response()->json(
+            [
+                'is_team_involved_in_season' => true,
+                'message' => "Teams retrieved successfully"
+            ],
+            HttpResponseCodes::HttpOK->value
+        );
     }
 }

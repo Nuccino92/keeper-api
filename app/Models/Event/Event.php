@@ -13,13 +13,13 @@ class Event extends Model
     protected $fillable = [
         'title',
         'description',
-        'start',
-        'end',
+        'start', //TIMESTAMPTZ
+        'end', //TIMESTAMPTZ
         'location',
         'event_type',
-        'team_id',
+        'season_team_id', // ref to season_team pk
         'created_by',
-        'eventable_id',
+        'eventable_id', // ref to other table, like game
     ];
 
     public function eventable()
@@ -40,6 +40,12 @@ class Event extends Model
     {
         return $this->belongsTo(Team::class);
     }
+
+    public function season()
+    {
+        return $this->belongsTo(Season::class);
+    }
+
 
     public function creator()
     {

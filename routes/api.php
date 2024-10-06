@@ -106,20 +106,24 @@ Route::middleware(['auth:api'])->group((function () {
         //region
         Route::prefix('league')->group(function () {
             Route::middleware([CheckProductAccess::class])->group(function () {
-                Route::get('/{league}', [ControlPanelController::class, 'index']);
 
-                Route::prefix('members')->group(function () {});
+                Route::prefix('/{league}')->group(function () {
+                    Route::get('', [ControlPanelController::class, 'index']);
 
-                Route::prefix('teams')->group(function () {
-                    Route::get('', [TeamControlPanelController::class, 'index']);
-                    Route::get('/{team}', [TeamControlPanelController::class, 'findTeam']);
-                    Route::put('/{team}', [TeamControlPanelController::class, 'updateTeam']);
-                    Route::delete('/{team}', [TeamControlPanelController::class, 'deleteTeam']);
+                    Route::prefix('members')->group(function () {});
 
-                    Route::get('/for-management', [TeamControlPanelController::class, 'findTeamsForManagement']);
+                    Route::prefix('teams')->group(function () {
+                        Route::get('', [TeamControlPanelController::class, 'index']);
+                        Route::get('/{team}', [TeamControlPanelController::class, 'findTeam']);
+                        Route::put('/{team}', [TeamControlPanelController::class, 'updateTeam']);
+                        Route::delete('/{team}', [TeamControlPanelController::class, 'deleteTeam']);
+                        Route::get('/{team}/{season}', [TeamControlPanelController::class, 'findTeamInSeason']);
+
+                        Route::get('/for-management', [TeamControlPanelController::class, 'findTeamsForManagement']);
+                    });
+
+                    Route::prefix('players')->group(function () {});
                 });
-
-                Route::prefix('players')->group(function () {});
             });
         });
         //endregion
@@ -137,6 +141,9 @@ Route::middleware(['auth:api'])->group((function () {
         Route::prefix('league')->group(function () {
             Route::middleware([CheckProductAccess::class])->group(function () {
                 Route::get('/{league}', [EventsController::class, 'index']);
+                Route::post('/{league}', [EventsController::class, 'add']);
+                Route::put('/{league}/{event}', [EventsController::class, 'update']);
+                Route::delete('/{league}/{event}', [EventsController::class, 'delete']);
             });
         });
     });

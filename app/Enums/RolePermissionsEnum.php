@@ -15,6 +15,7 @@ class RolePermissionsEnum
     public const MANAGE_CALENDAR = 'manage_calendar';
     public const MANAGE_SEASONS = 'manage_seasons'; // (add season, delete season, set active season, add/remove teams from season)
 
+    //Possibly change to MANAGE_SEASONS
     public const MANAGE_ROSTER = 'manage_roster'; // for season page
     public const MANAGE_TEAMS = 'manage_teams'; // change teams info, (scoped), if scoped only allow editing scoped teams
 }
