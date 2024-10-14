@@ -17,7 +17,8 @@ class Event extends Model
         'end', //TIMESTAMPTZ
         'location',
         'event_type',
-        'season_team_id', // ref to season_team pk
+        'season_id',
+        'season_team_id', // ref to season_team pk, nullable
         'created_by',
         'eventable_id', // ref to other table, like game
     ];
