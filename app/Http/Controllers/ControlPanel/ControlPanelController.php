@@ -55,7 +55,7 @@ class ControlPanelController extends Controller
             RolePermissionsEnum::MANAGE_PLAYERS => ['scope' => []],
             RolePermissionsEnum::MANAGE_PAYMENTS => ['scope' => []],
             RolePermissionsEnum::MANAGE_NEWS => ['scope' => []],
-            RolePermissionsEnum::MANAGE_CALENDAR => ['scope' => []],
+            RolePermissionsEnum::MANAGE_SCHEDULE => ['scope' => []],
             RolePermissionsEnum::MANAGE_SEASONS => ['scope' => []],
             RolePermissionsEnum::MANAGE_ROSTER => ['scope' => []],
             RolePermissionsEnum::MANAGE_TEAMS => ['scope' => []],
@@ -66,7 +66,7 @@ class ControlPanelController extends Controller
             RolePermissionsEnum::MANAGE_PLAYERS => ['scope' => []],
             RolePermissionsEnum::MANAGE_PAYMENTS => ['scope' => []],
             RolePermissionsEnum::MANAGE_NEWS => ['scope' => []],
-            RolePermissionsEnum::MANAGE_CALENDAR => ['scope' => []],
+            RolePermissionsEnum::MANAGE_SCHEDULE => ['scope' => []],
             RolePermissionsEnum::MANAGE_SEASONS => ['scope' => []],
             RolePermissionsEnum::MANAGE_ROSTER => ['scope' => []],
             RolePermissionsEnum::MANAGE_TEAMS => ['scope' => []],
@@ -76,7 +76,7 @@ class ControlPanelController extends Controller
             RolePermissionsEnum::MANAGE_PLAYERS => ['scope' => []],
             RolePermissionsEnum::MANAGE_PAYMENTS => ['scope' => []],
             RolePermissionsEnum::MANAGE_NEWS => ['scope' => []],
-            RolePermissionsEnum::MANAGE_CALENDAR => ['scope' => []],
+            RolePermissionsEnum::MANAGE_SCHEDULE => ['scope' => []],
             RolePermissionsEnum::MANAGE_SEASONS => ['scope' => []],
             RolePermissionsEnum::MANAGE_ROSTER => ['scope' => []],
             RolePermissionsEnum::MANAGE_TEAMS => ['scope' => []],
@@ -132,6 +132,25 @@ class ControlPanelController extends Controller
             );
         } catch (Exception $e) {
             return response()->json(['error' => 'server error']);
+        }
+    }
+
+    public function generateGamesSchedule(League $league): JsonResponse
+    {
+        //TODO: handle an odd number of teams. 
+        try {
+            // Check league seasons, find active season. if has active season generate schedule, if not throw error
+
+            usleep(3200000); // 400,000 microseconds = 400ms
+
+            return response()->json(
+                [
+                    'message' => "Schedule generated successfully",
+                ],
+                HttpResponseCodes::HttpOK->value
+            );
+        } catch (Exception $e) {
+            return response()->json(['error' => $e]);
         }
     }
 }
