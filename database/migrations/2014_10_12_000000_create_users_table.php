@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        //todo: add avatar
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
